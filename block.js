@@ -1,3 +1,5 @@
+const sha256 = require('./sha-256');
+
 const {GENESIS_DATA} = require('./config');
 
 class Block{
@@ -18,8 +20,15 @@ class Block{
         return new Block (GENESIS_DATA);
     }
     static mineBlock({lastBlock,data}){
-        return new this({timestamp:Date.now(),
-        lastHash:lastBlock.hash, data:data}); //a Block
+
+    /*    return new this({timestamp:Date.now(),
+        lastHash:lastBlock.hash, data:data}); //a Block  */
+
+        const lastHash = lastBlock.hash;
+        const timestamp = Date.now();
+
+        return new this({timestamp,lastHash,data,hash: sha256(timestamp,lastHash,data)});
+
     }
 }
  module.exports = Block
