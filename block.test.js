@@ -20,7 +20,7 @@ describe('Block',()=>{
     describe('GenesisBlock',()=>{             //describes test for a genesis function
         const GenesisBlock=Block.genesis();
         
-        console.log('GenesisBlock',GenesisBlock);
+        //console.log('GenesisBlock',GenesisBlock);
         it('Genesis block is an instance of Block class',()=>{
             expect(GenesisBlock instanceof Block).toEqual(true);
         })
@@ -32,4 +32,26 @@ describe('Block',()=>{
                                                         // hash, data.
         })
     })  
+
+    describe('MinedBlock',()=>{
+        const lastBlock = Block.genesis();
+        const data ='some data';
+        const MinedBlock = Block.mineBlock({data,lastBlock});
+
+        it('returns a Block instance',()=>{
+            expect(MinedBlock instanceof Block).toEqual(true);
+        })
+
+        it('sets the lastHash to be the hash of the lastBlock',()=>{
+            expect(MinedBlock.lastHash).toEqual(lastBlock.hash);
+        })
+
+        it('sets the data',()=>{
+            expect(MinedBlock.data).toEqual(data);
+        })
+
+        it('sets a timestamp',()=>{
+            expect(MinedBlock.timestamp).not.toEqual(undefined);
+        })
+    })
 })
