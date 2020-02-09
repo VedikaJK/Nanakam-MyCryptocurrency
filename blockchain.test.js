@@ -4,12 +4,13 @@ const Block = require('./block');
 describe('Blockchain',()=>{
     //const blockchain = new Blockchain();
 
-    // let blockchain; // a dynamic variable
+     let blockchain; // a dynamic variable
 
-    // beforeEach(()=>{
-    //     const blockchain = new Blockchain();    // this will cause each test to have a new instance of the Blockchain class
-    //                                             // due to which the tests run independently, not influenced by changes in other tests
-    // });
+    beforeEach(()=>{
+        const blockchain = new Blockchain();    // this will cause each test to have a new instance of the Blockchain class
+        let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+        let originalChain = blockchain.chain;
+    });
 
     it('contains a `chain` Array instance',()=>{
         const blockchain = new Blockchain();
@@ -92,6 +93,59 @@ describe('Blockchain',()=>{
                 });
             })
 
+        });
+
+    });
+
+    // Chain Replacement Tests
+
+    describe('Chain Replacement',()=>{
+
+        describe('When the incoming chain is not longer',()=>{
+            it('Does not replace the chain',()=>{
+                let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                let originalChain = blockchain.chain;
+                newChain.chain[0]={new: 'chain'};
+                blockchain.replaceChain(newChain.chain);
+                expect(blockchain.chain).toEqual(originalChain);   // no change
+            });
+        });
+
+        describe('When the new chain is longer',()=>{
+
+            beforeEach(()=>{
+                newChain.addBlock({data:'IIT Guwahati'});
+                newChain.addBlock({data:'IIT Kanpur'});
+                newChain.addBlock({data:'IIT Bombay'});
+
+            });
+
+            describe('and the chain is invalid',()=>{
+                it('Does not replace the chain',()=>{
+                    let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                    let originalChain = blockchain.chain;
+                    newChain.addBlock({data:'IIT Guwahati'});
+                newChain.addBlock({data:'IIT Kanpur'});
+                newChain.addBlock({data:'IIT Bombay'});
+                    newChain.chain[2].hash = 'some-fake-hash';
+                    blockchain.replaceChain(newChain.chain);
+                    expect(blockchain.chain).toEqual(originalChain);   // no change
+                });
+            });
+
+            describe('and the chain is valid',()=>{
+
+                it('Replaces the chain',()=>{
+                    let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                    let originalChain = blockchain.chain;
+                    newChain.addBlock({data:'IIT Guwahati'});
+                newChain.addBlock({data:'IIT Kanpur'});
+                newChain.addBlock({data:'IIT Bombay'});
+                    blockchain.replaceChain(newChain.chain);
+                    expect(blockchain.chain).toEqual(newChain);   // change
+                });
+            });
+            
         });
 
     });

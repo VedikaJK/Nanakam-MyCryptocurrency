@@ -42,6 +42,10 @@ class Blockchain{
 
         }
     
+    replaceChain(chain){
+        
+    }
+
 };
 
 module.exports = Blockchain;
