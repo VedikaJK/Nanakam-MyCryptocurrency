@@ -42,7 +42,7 @@ class Blockchain{
 
         }
     
-    replaceChain(chain){
+    replaceChain(chain){            // replaceChain is based on an individual instance of the chain hence it is not static func
         
     }
 

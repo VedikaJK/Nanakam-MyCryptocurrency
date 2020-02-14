@@ -6,7 +6,7 @@ describe('Blockchain',()=>{
 
      let blockchain; // a dynamic variable
 
-    beforeEach(()=>{
+    beforeAll(()=>{
         const blockchain = new Blockchain();    // this will cause each test to have a new instance of the Blockchain class
         let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
         let originalChain = blockchain.chain;
@@ -99,11 +99,13 @@ describe('Blockchain',()=>{
 
     // Chain Replacement Tests
 
-    describe('Chain Replacement',()=>{
+    describe('replaceChain()',()=>{
 
         describe('When the incoming chain is not longer',()=>{
             it('Does not replace the chain',()=>{
                 let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                let blockchain = new Blockchain();     
+                
                 let originalChain = blockchain.chain;
                 newChain.chain[0]={new: 'chain'};
                 blockchain.replaceChain(newChain.chain);
@@ -113,16 +115,12 @@ describe('Blockchain',()=>{
 
         describe('When the new chain is longer',()=>{
 
-            beforeEach(()=>{
-                newChain.addBlock({data:'IIT Guwahati'});
-                newChain.addBlock({data:'IIT Kanpur'});
-                newChain.addBlock({data:'IIT Bombay'});
-
-            });
+        
 
             describe('and the chain is invalid',()=>{
                 it('Does not replace the chain',()=>{
                     let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                    let blockchain = new Blockchain();
                     let originalChain = blockchain.chain;
                     newChain.addBlock({data:'IIT Guwahati'});
                 newChain.addBlock({data:'IIT Kanpur'});
@@ -136,6 +134,7 @@ describe('Blockchain',()=>{
             describe('and the chain is valid',()=>{
 
                 it('Replaces the chain',()=>{
+                    let blockchain = new Blockchain();
                     let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
                     let originalChain = blockchain.chain;
                     newChain.addBlock({data:'IIT Guwahati'});
@@ -147,7 +146,9 @@ describe('Blockchain',()=>{
             });
             
         });
+            
+        });
 
-    });
+    
 
 });
