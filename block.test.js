@@ -8,6 +8,8 @@ describe('Block',()=>{
     const lastHash = 'ddcsh';
     const hash = 'yewfhdcbn';
     const data = ['blockchain','crypto'];
+    const nonce =1;
+    const difficulty = 1;
     const b = new Block({timestamp,lastHash,hash,data});  //if parameters and variables have the same name then no need to specify key value in arguments
 
     it('has timestamp,lastHash,hash and data',()=>{
@@ -15,6 +17,9 @@ describe('Block',()=>{
         expect(b.timestamp).toEqual(timestamp);
         expect(b.lastHash).toEqual(lastHash);
         expect(b.hash).toEqual(hash);
+        expect(b.nonce).toEqual(nonce);
+        expect(b.difficulty).toEqual(difficulty);
+        
         
     })
 
@@ -41,22 +46,29 @@ describe('Block',()=>{
 
         it('returns a Block instance',()=>{
             expect(MinedBlock instanceof Block).toEqual(true);
-        })
+        });
 
         it('sets the lastHash to be the hash of the lastBlock',()=>{
             expect(MinedBlock.lastHash).toEqual(lastBlock.hash);
-        })
+        });
 
         it('sets the data',()=>{
             expect(MinedBlock.data).toEqual(data);
-        })
+        });
 
         it('sets a timestamp',()=>{
             expect(MinedBlock.timestamp).not.toEqual(undefined);
-        })
+        });
 
         it('returns a SHA256 hash',()=>{
-            expect(MinedBlock.hash).toEqual(sha256(MinedBlock.timestamp,MinedBlock.lastHash,data))
-        })
+            expect(MinedBlock.hash).toEqual(
+                sha256(MinedBlock.timestamp,MinedBlock.nonce,MinedBlock.difficulty,MinedBlock.lastHash,data))
+        });
+
+        it('sets a `hash` that matches the difficulty level',()=>{
+            expect(MinedBlock.hash.substring(u,MinedBlock.difficulty)).toEqual(
+                '0',repeat(MinedBlock.difficulty)
+            );
+        });
     })
 })
