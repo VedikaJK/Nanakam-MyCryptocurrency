@@ -28,12 +28,12 @@ class Blockchain{
             const block =chain[i];
             const actuallastHash = chain[i-1].hash;
 
-            const {timestamp, lastHash, hash, data} = block;    // javascript automatically sets the corresponding values
+            const {timestamp, lastHash, hash,difficulty,nonce, data} = block;    // javascript automatically sets the corresponding values
 
             if(actuallastHash !== lastHash)
                 return false;
             
-            const calculatedHash = sha256(timestamp,lastHash,data);
+            const calculatedHash = sha256(timestamp,lastHash,data,difficulty,nonce);
 
             if(calculatedHash !== hash)    return false;
         }

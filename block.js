@@ -9,11 +9,15 @@ class Block{
         this.hash=hash;
         this.data=data;
     }*/
-    constructor({timestamp,lastHash,hash,data}){     //this {..} allows to write arguments in any order
+    constructor({timestamp,lastHash,hash,data,nonce,difficulty}){     //this {..} allows to write arguments in any order
         this.timestamp = timestamp;
         this.lastHash = lastHash;
         this.hash=hash;
         this.data=data;
+        this.difficulty=difficulty;
+        this.nonce=nonce;
+        
+        
     }
     
     static genesis(){
@@ -23,11 +27,19 @@ class Block{
 
     /*    return new this({timestamp:Date.now(),
         lastHash:lastBlock.hash, data:data}); //a Block  */
-
+        let hash,timestamp;
         const lastHash = lastBlock.hash;
-        const timestamp = Date.now();
+        //const timestamp = Date.now();
+        const {difficulty}= lastBlock;  // takes difficulty value of lastBlock
+        let nonce = 0;
 
-        return new this({timestamp,lastHash,data,hash: sha256(timestamp,lastHash,data)});
+        do{
+            nonce++;
+            timestamp = Date.now();
+            hash = sha256(timestamp,lastHash,data,difficulty,nonce);
+        }while(hash.substring(0,difficulty)!== '0'.repeat(difficulty) );
+        
+        return new this({timestamp,lastHash,data,difficulty,nonce,hash}); //hash: sha256(timestamp,lastHash,data,difficulty,nonce)});
 
     }
 }

@@ -10,7 +10,7 @@ describe('Block',()=>{
     const data = ['blockchain','crypto'];
     const nonce =1;
     const difficulty = 1;
-    const b = new Block({timestamp,lastHash,hash,data});  //if parameters and variables have the same name then no need to specify key value in arguments
+    const b = new Block({timestamp,lastHash,hash,data,nonce,difficulty});  //if parameters and variables have the same name then no need to specify key value in arguments
 
     it('has timestamp,lastHash,hash and data',()=>{
         expect(b.data).toEqual(data);
@@ -66,9 +66,8 @@ describe('Block',()=>{
         });
 
         it('sets a `hash` that matches the difficulty level',()=>{
-            expect(MinedBlock.hash.substring(u,MinedBlock.difficulty)).toEqual(
-                '0',repeat(MinedBlock.difficulty)
-            );
+            expect(MinedBlock.hash.substring(0,MinedBlock.difficulty)).toEqual(
+                '0'.repeat(MinedBlock.difficulty));
         });
     })
 })
