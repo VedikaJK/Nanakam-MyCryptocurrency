@@ -141,7 +141,7 @@ describe('Blockchain',()=>{
                 newChain.addBlock({data:'IIT Kanpur'});
                 newChain.addBlock({data:'IIT Bombay'});
                     blockchain.replaceChain(newChain.chain);
-                    expect(blockchain.chain).toEqual(newChain);   // change
+                    expect(blockchain.chain).toEqual(newChain.chain);   // change
                 });
             });
             
