@@ -101,7 +101,27 @@ describe('Blockchain',()=>{
 
     describe('replaceChain()',()=>{
 
+        let errorMock, logMock;
+
+        beforeEach(()=>{                            // this is used to silent the logs and errors
+            errorMock=jest.fn();
+            logMock = jest.fn();                    // jest.fn does not print by default
+            global.console.error = errorMock;
+            global.console.log = logMock;
+            
+        });
+
         describe('When the incoming chain is not longer',()=>{
+
+            beforeEach(()=>{
+                let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                let blockchain = new Blockchain();     
+                
+                let originalChain = blockchain.chain;
+                newChain.chain[0]={new: 'chain'};
+                blockchain.replaceChain(newChain.chain);
+            });
+
             it('Does not replace the chain',()=>{
                 let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
                 let blockchain = new Blockchain();     
@@ -111,6 +131,10 @@ describe('Blockchain',()=>{
                 blockchain.replaceChain(newChain.chain);
                 expect(blockchain.chain).toEqual(originalChain);   // no change
             });
+
+            it('logs an error',()=>{
+                expect(errorMock).toHaveBeenCalled();
+            });
         });
 
         describe('When the new chain is longer',()=>{
@@ -118,6 +142,19 @@ describe('Blockchain',()=>{
         
 
             describe('and the chain is invalid',()=>{
+
+                beforeEach(()=>{
+                    let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                    let blockchain = new Blockchain();
+                    let originalChain = blockchain.chain;
+                    newChain.addBlock({data:'IIT Guwahati'});
+                newChain.addBlock({data:'IIT Kanpur'});
+                newChain.addBlock({data:'IIT Bombay'});
+                    newChain.chain[2].hash = 'some-fake-hash';
+                    blockchain.replaceChain(newChain.chain);
+                   
+                });
+
                 it('Does not replace the chain',()=>{
                     let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
                     let blockchain = new Blockchain();
@@ -127,11 +164,26 @@ describe('Blockchain',()=>{
                 newChain.addBlock({data:'IIT Bombay'});
                     newChain.chain[2].hash = 'some-fake-hash';
                     blockchain.replaceChain(newChain.chain);
+                   
                     expect(blockchain.chain).toEqual(originalChain);   // no change
+                });
+                it('logs an error',()=>{
+                    expect(errorMock).toHaveBeenCalled();
                 });
             });
 
             describe('and the chain is valid',()=>{
+
+                beforeEach(()=>{
+                    let blockchain = new Blockchain();
+                    let newChain = new Blockchain();                                        // due to which the tests run independently, not influenced by changes in other tests
+                    let originalChain = blockchain.chain;
+                    newChain.addBlock({data:'IIT Guwahati'});
+                newChain.addBlock({data:'IIT Kanpur'});
+                newChain.addBlock({data:'IIT Bombay'});
+                    blockchain.replaceChain(newChain.chain);
+                   
+                });
 
                 it('Replaces the chain',()=>{
                     let blockchain = new Blockchain();
@@ -142,6 +194,10 @@ describe('Blockchain',()=>{
                 newChain.addBlock({data:'IIT Bombay'});
                     blockchain.replaceChain(newChain.chain);
                     expect(blockchain.chain).toEqual(newChain.chain);   // change
+                });
+
+                it('tells about chain replacement',()=>{
+                    expect(logMock).toHaveBeenCalled();
                 });
             });
             
