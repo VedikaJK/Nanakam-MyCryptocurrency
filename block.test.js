@@ -69,6 +69,12 @@ describe('Block',()=>{
             expect(MinedBlock.hash.substring(0,MinedBlock.difficulty)).toEqual(
                 '0'.repeat(MinedBlock.difficulty));
         });
+
+        it('adjusts the difficulty',()=>{
+            const PossibleResults = [lastBlock.difficulty - 1,lastBlock.difficulty + 1];
+
+            expect(PossibleResults.includes(MinedBlock.difficulty)).toBe(true);
+        });
     })
 
     describe('adjusts difficulty dynamically',()=>{
@@ -80,6 +86,11 @@ describe('Block',()=>{
         it('lowers the difficulty for a slowly mined Block',()=>{
             expect(Block.adjustDifficulty({ originalBlock : b,
                 timestamp: b.timestamp + MINE_Rate +100})).toEqual(b.difficulty -1);
+        });
+
+        it('has a lower limit of 1',()=>{
+            b.difficulty = -1;
+            expect(Block.adjustDifficulty({originalBlock: b,timestamp})).toEqual(1);
         });
         
     })

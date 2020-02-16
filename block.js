@@ -30,12 +30,13 @@ class Block{
         let hash,timestamp;
         const lastHash = lastBlock.hash;
         //const timestamp = Date.now();
-        const {difficulty}= lastBlock;  // takes difficulty value of lastBlock
+        let {difficulty}= lastBlock;  // takes difficulty value of lastBlock
         let nonce = 0;
 
         do{
             nonce++;
             timestamp = Date.now();
+            difficulty = Block.adjustDifficulty({originalBlock: lastBlock,timestamp});
             hash = sha256(timestamp,lastHash,data,difficulty,nonce);
         }while(hash.substring(0,difficulty)!== '0'.repeat(difficulty) );
         
@@ -46,6 +47,7 @@ class Block{
     static adjustDifficulty({originalBlock,timestamp}){
         const {difficulty} = originalBlock;   // no need to write originalBlock.difficulty
 
+        if (difficulty<1) return 1;
         const difference = timestamp - originalBlock.timestamp;
 
         if(difference >=MINE_Rate) return difficulty-1;
