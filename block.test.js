@@ -1,10 +1,10 @@
 const Block = require('./block');
 const sha256 = require('./sha-256');
-const {GENESIS_DATA}= require('./config');  // we take genesis_data from config file. written in {..} as 
+const {GENESIS_DATA, MINE_Rate}= require('./config');  // we take genesis_data from config file. written in {..} as 
                                             //genesis_data was exported in an object
 
 describe('Block',()=>{
-    const timestamp = '1/2/2020';
+    const timestamp = 2000;//'1/2/2020';
     const lastHash = 'ddcsh';
     const hash = 'yewfhdcbn';
     const data = ['blockchain','crypto'];
@@ -69,5 +69,18 @@ describe('Block',()=>{
             expect(MinedBlock.hash.substring(0,MinedBlock.difficulty)).toEqual(
                 '0'.repeat(MinedBlock.difficulty));
         });
+    })
+
+    describe('adjusts difficulty dynamically',()=>{
+        it('raises the difficulty for a quickly mined Block',()=>{
+            console.log(b.difficulty);
+            expect(Block.adjustDifficulty({ originalBlock : b,
+            timestamp: b.timestamp + MINE_Rate -100})).toEqual(b.difficulty +1);
+        });
+        it('lowers the difficulty for a slowly mined Block',()=>{
+            expect(Block.adjustDifficulty({ originalBlock : b,
+                timestamp: b.timestamp + MINE_Rate +100})).toEqual(b.difficulty -1);
+        });
+        
     })
 })

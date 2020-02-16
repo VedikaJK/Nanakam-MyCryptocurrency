@@ -1,4 +1,5 @@
 //this file will store all hard-coded values
+const MINE_Rate = 1000; // 1 sec
 const INITIAL_DIFFICULTY = 3;
 
 const GENESIS_DATA ={
@@ -10,4 +11,4 @@ const GENESIS_DATA ={
     nonce : 0
 };
 
-module.exports={ GENESIS_DATA};
+module.exports={ GENESIS_DATA,MINE_Rate};

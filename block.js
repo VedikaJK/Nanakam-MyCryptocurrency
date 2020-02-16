@@ -1,6 +1,6 @@
 const sha256 = require('./sha-256');
 
-const {GENESIS_DATA} = require('./config');
+const {GENESIS_DATA,MINE_Rate} = require('./config');
 
 class Block{
   /*  constructor(timestamp,lastHash,hash,data){
@@ -41,6 +41,15 @@ class Block{
         
         return new this({timestamp,lastHash,data,difficulty,nonce,hash}); //hash: sha256(timestamp,lastHash,data,difficulty,nonce)});
 
+    }
+
+    static adjustDifficulty({originalBlock,timestamp}){
+        const {difficulty} = originalBlock;   // no need to write originalBlock.difficulty
+
+        const difference = timestamp - originalBlock.timestamp;
+
+        if(difference >=MINE_Rate) return difficulty-1;
+        return difficulty + 1;
     }
 }
  module.exports = Block
