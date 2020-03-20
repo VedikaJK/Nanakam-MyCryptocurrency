@@ -1,5 +1,4 @@
 const crypto = require('crypto'); //javascript module 'crypto' (== class)
- 
 //this has a CreateHash function which can be used to create crypto objects
 
 const sha256=(...inputs)=>{              // javascripts spread operator for multiple no. of inputs
@@ -7,7 +6,7 @@ const sha256=(...inputs)=>{              // javascripts spread operator for mult
         const hash=crypto.createHash('sha256');
         hash.update(inputs.sort().join(' '));    //update accepts a string hence join
                                                     // sort so that any order of inputs produces same o/p
-        return hash.digest('hex');
+        return ( hash.digest('hex'));
 }; 
 
 module.exports = sha256;

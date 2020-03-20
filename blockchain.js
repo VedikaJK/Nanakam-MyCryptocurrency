@@ -27,12 +27,13 @@ class Blockchain{
         for( let i=1; i<chain.length; i++){    //skip checking the genesis block
             const block =chain[i];
             const actuallastHash = chain[i-1].hash;
-
+            const lastDifficulty = chain[i-1].difficulty;
             const {timestamp, lastHash, hash,difficulty,nonce, data} = block;    // javascript automatically sets the corresponding values
 
             if(actuallastHash !== lastHash)
                 return false;
             
+            if (Math.abs(lastDifficulty - difficulty)>1) return false;
             const calculatedHash = sha256(timestamp,lastHash,data,difficulty,nonce);
 
             if(calculatedHash !== hash)    return false;

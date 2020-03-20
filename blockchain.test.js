@@ -1,5 +1,6 @@
 const Blockchain = require('./blockchain');
 const Block = require('./block');
+const sha256 = require('./sha-256');
 
 describe('Blockchain',()=>{
     //const blockchain = new Blockchain();
@@ -91,7 +92,29 @@ describe('Blockchain',()=>{
 
                 expect(Blockchain.isValidChain(blockchain.chain)).toEqual(true);
                 });
-            })
+            });
+
+            describe('and the chain contains a block with jumped difficulty',()=>{
+                it('returns false',()=>{
+                    const blockchain = new Blockchain();
+                    blockchain.addBlock({data:'IIT Guwahati'});
+               blockchain.addBlock({data:'IIT Kanpur'});
+               blockchain.addBlock({data:'IIT Bombay'});
+          
+               const lastBlock = blockchain.chain[blockchain.chain.length-1];
+               const data = [];
+               const lastHash = lastBlock.hash;
+               const nonce = 0;
+               const timestamp = Date.now();
+               const difficulty = lastBlock.difficulty - 3;
+               const hash = sha256(timestamp,lastHash,difficulty,nonce,data);
+               const badBlock = new Block({
+                timestamp,lastHash,difficulty,nonce,data
+               });
+               blockchain.chain.push(badBlock);
+               expect(Blockchain.isValidChain(blockchain.chain)).toBe(false);
+            });
+            });
 
         });
 

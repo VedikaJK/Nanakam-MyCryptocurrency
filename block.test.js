@@ -1,3 +1,4 @@
+const hexToBinary = require('hex-to-binary');
 const Block = require('./block');
 const sha256 = require('./sha-256');
 const {GENESIS_DATA, MINE_Rate}= require('./config');  // we take genesis_data from config file. written in {..} as 
@@ -66,7 +67,7 @@ describe('Block',()=>{
         });
 
         it('sets a `hash` that matches the difficulty level',()=>{
-            expect(MinedBlock.hash.substring(0,MinedBlock.difficulty)).toEqual(
+            expect(hexToBinary(MinedBlock.hash).substring(0,MinedBlock.difficulty)).toEqual(
                 '0'.repeat(MinedBlock.difficulty));
         });
 
