@@ -1,7 +1,7 @@
 const hexToBinary = require('hex-to-binary');
 const Block = require('./block');
-const sha256 = require('./sha-256');
-const {GENESIS_DATA, MINE_Rate}= require('./config');  // we take genesis_data from config file. written in {..} as 
+const sha256 = require('../util/sha-256');
+const {GENESIS_DATA, MINE_Rate}= require('../config');  // we take genesis_data from config file. written in {..} as 
                                             //genesis_data was exported in an object
 
 describe('Block',()=>{

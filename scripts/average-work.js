@@ -1,4 +1,4 @@
-const Blockchain = require('./blockchain')
+const Blockchain = require('../blockchain')   //we don't need to specify index, every index file gets automatically accessed
 
 const blockchain = new Blockchain();
 

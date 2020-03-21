@@ -1,5 +1,5 @@
 const Block = require('./block');
-const sha256 = require('./sha-256');
+const sha256 = require('../util/sha-256');
 
 class Blockchain{
 
