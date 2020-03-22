@@ -1,6 +1,6 @@
 const Blockchain = require('./index');
 const Block = require('./block');
-const sha256 = require('../util/sha-256');
+const {sha256} = require('../util');
 
 describe('Blockchain',()=>{
     //const blockchain = new Blockchain();
@@ -228,6 +228,8 @@ describe('Blockchain',()=>{
             
         });
 
+       
+        
     
 
 });
