@@ -43,7 +43,7 @@ class Blockchain{
 
         }
     
-    replaceChain(chain){            // replaceChain is based on an individual instance of the chain hence it is not static func
+    replaceChain(chain, onSuccess){            // replaceChain is based on an individual instance of the chain hence it is not static func
         if(chain.length <= this.chain.length){
             console.error('The incoming chain must be longer');
             return;
@@ -52,6 +52,7 @@ class Blockchain{
             console.error('The incoming chain must be valid');
             return;
         }
+        if (onSuccess) onSuccess();
         console.log('replacing chain with ',chain);
         this.chain = chain;
     }

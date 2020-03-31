@@ -1,4 +1,3 @@
-
 const Transaction = require('./transaction');
 
 class TransactionPool {

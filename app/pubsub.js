@@ -30,7 +30,9 @@ class PubSub{
 
     }
     broadcastChain() {
+      //console.log('HELLO THI IS CHAIN ',blockchain.chain);
         this.publish({
+         
           channel: CHANNELS.BLOCKCHAIN,
           message: JSON.stringify(this.blockchain.chain)  //message must be in string format, hence stringify is used to convert from array
          });
@@ -48,24 +50,26 @@ class PubSub{
       
               console.log(`Message received. Channel: ${channel}. Message: ${message}`);
               const parsedMessage = JSON.parse(message);
-      
+
+              //console.log('Here is parsedMessage ',parsedMessage);
+
               switch(channel) {
-          case CHANNELS.BLOCKCHAIN:
-            this.blockchain.replaceChain(parsedMessage, true, () => {
-              this.transactionPool.clearBlockchainTransactions(
-                { chain: parsedMessage.chain }
-              );
-            });
-            break;
-          case CHANNELS.TRANSACTION:
-            if (!this.transactionPool.existingTransaction({
-              inputAddress: this.wallet.publicKey
-            })) {
-              this.transactionPool.setTransaction(parsedMessage);
-            }
-            break;
-          default:
-            return;
+                case CHANNELS.BLOCKCHAIN:
+                  this.blockchain.replaceChain(parsedMessage, () => {
+                    this.transactionPool.clearBlockchainTransactions(
+                      {chain: parsedMessage} 
+                    );
+                  });
+                  break;
+                case CHANNELS.TRANSACTION:
+                  if (!this.transactionPool.existingTransaction({
+                    inputAddress: this.wallet.publicKey
+                  })) {
+                    this.transactionPool.setTransaction(parsedMessage);
+                  }
+                  break;
+                default:
+                  return;
         }
             }
           }    
