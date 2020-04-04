@@ -160,9 +160,7 @@ describe('Transaction', () => {
           expect(transaction.outputMap[senderWallet.publicKey])
             .toEqual(originalSenderOutput - nextAmount - addedAmount);
         });
-
       });
-      
     });
   });
 

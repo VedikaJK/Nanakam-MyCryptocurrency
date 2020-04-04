@@ -1,4 +1,4 @@
-const sha256 = require('./sha-256');
+const sha256 = require('./crypto-hash');
 
 describe('SHA-256',()=>{
     it('Generates a SHA256 hash',()=>{
@@ -17,3 +17,5 @@ describe('SHA-256',()=>{
     });
     
 });
+
+
